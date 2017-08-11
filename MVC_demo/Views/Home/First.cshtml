@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "First";
+}
+
+<h2>First</h2>
+
+<table>
+    <tr>
+        <td>输入值：</td>
+        <td><input type="text" id="txtValue" data-bind="value: myValue" /></td>
+    </tr>
+    <tr>
+        <td>响应文本：</td>
+        <td><span id="spnValue" data-bind="text: myValue"></span></td>
+    </tr>
+</table>
+<script type="text/javascript" src="~/Scripts/knockout-3.4.2.debug.js"></script>
+<script type="text/javascript">
+        var myViewModel =
+            {
+                myValue: ko.observable("aehyok")
+            };
+        ko.applyBindings(myViewModel);
+</script>

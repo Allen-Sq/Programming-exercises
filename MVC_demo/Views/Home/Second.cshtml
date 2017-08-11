@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Second";
+}
+
+<h2>Second</h2>
+<p>
+    The name is <span data-bind="text:personName"></span>
+</p>
+<p>
+    The fullname is <span data-bind="text:fullname"></span>
+</p>
+
+<p>First name: <span data-bind="text: firstName"></span></p>
+<p>Last name: <span data-bind="text: lastName"></span></p>
+<h2>Hello, <input data-bind="value: fullName" />!</h2>
+
+<p>
+    Enter bid price: <input data-bind="value:formattedPrice"/>
+</p>
+
+<script type="text/javascript" src="~/Scripts/knockout-3.4.2.debug.js"></script>
+<script type="text/javascript">
+    //1.创建一个viewmodel，使用监控属性
+    var myViewModel = {
+        personName: ko.observable('allenok'),
+        personAge: ko.observable(24),
+        firstName: ko.observable('aehyok'),
+        lastName: ko.observable('Leo1')
+    };
+
+    //2.监控属性的读操作
+    //alert(myViewModel.personAge);
+
+    //3.监控属性的写操作
+    myViewModel.personName('allen-test');
+
+    //4.添加一个依赖监控属性，返回姓名全称，自动更新
+    myViewModel.fullname = ko.dependentObservable(function () {
+        return this.firstName() + " " + this.lastName();
+    }, myViewModel);
+
+    ko.applyBindings(myViewModel);
+
+    //5.创建viewmodel，优化上述的监控属性
+    var viewModel = {
+        firstName: ko.observable('allen'),
+        lastName: ko.observable('su')
+    };
+
+    viewModel.fullName = ko.dependentObservable({
+        read: function () {
+            return this.firstName() + " " + this.lastName();
+        },
+        write: function (value) {
+            var lastSpacePos = value.lastIndexOf(" ");
+            if (lastSpacePos > 0) {
+                this.firstName(value.substring(0, lastSpacePos));
+                this.lastName(value.substring(lastSpacePos + 1));
+            }
+        },
+        owner: viewModel
+    });
+
+    //6.Value转换器，从基础的数据转化成显示格式
+    viewModel.formattedPrice = ko.dependentObservable({
+        read: function () {
+            return "$" + this.price().toFixed(2);
+        },
+        write: function (value) {
+            value = parseFloat(value.replace(/[^\.\d]/g, ""));
+            this.price(isNaN(value) ? 0 : value);
+        },
+        owner: viewModel
+    });
+
+    // Activates knockout.js
+    ko.applyBindings(viewModel);
+</script>

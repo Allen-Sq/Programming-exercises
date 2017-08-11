@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Four";
+}
+
+<h2>Four</h2>
+@*<div data-bind="visible:shouldShowMessage">
+    You will see this message only when "shouldShowMessage" holds a true value.
+</div>
+<div data-bind="visible: myValues().length > 0">
+    You will see this message only when 'myValues' has at least one member.
+</div>*@
+
+<p>
+    Today's message is: <span data-bind="text: myMessage"></span>
+</p>
+<p>
+    The item is <span data-bind="text: priceRating"></span> today.
+</p>
+<script type="text/javascript" src="~/Scripts/knockout-3.4.2.debug.js"></script>
+<script type="text/javascript">
+    //属性绑定
+    //var viewModel = {
+    //    shouldShowMessage: ko.observable(true)  //初始化的时候div是visible的，该绑定会删除该元素的style.display值，让元素可见
+    //};
+    //viewModel.shouldShowMessage = ko.observable(false);  //现在div是hidden的，display="none"，优先级高于你在CSS里定义的任何display样式
+    //ko.applyBindings(viewModel);//激活konckout
+    
+    //也可以使用JavaScript函数或者表达式作为参数，这样是否显示取决于这个参数的值
+    //var AppViewModel = {
+    //    myValues: ko.observableArray([])
+    //};
+    //AppViewModel.myValues.push("some value");       //向myValues数组中 添加一个项
+    //ko.applyBindings(AppViewModel);
+
+    //简单绑定原理：KO将参数值会设置在元素的innerText（IE）或textContent（其他）属性上，原来的文本会被覆盖
+    var myViewModel = {
+        myMessage: ko.observable(),//参数添加了监控属性，则元素的text文本会根据参数值的变化而更新
+        price:ko.observable(60)
+    };
+    myViewModel.myMessage("Hello, world!");
+    //使用函数或者表达式来决定text值
+    myViewModel.priceRating = ko.dependentObservable(function () {
+        return this.price() > 50 ? "expensive" : "affordable";
+    }, myViewModel);
+    ko.applyBindings(myViewModel);
+</script>

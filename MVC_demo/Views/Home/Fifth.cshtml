@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Fifth";
+}
+
+<h2>Fifth</h2>
+
+<div data-bind="html:details"></div>
+
+<p style="background: gray; color: #ffffff; font-size: 18pt;">Html绑定</p>
+
+<script type="text/javascript" src="~/Scripts/knockout-3.4.2.debug.js"></script>
+<script type="text/javascript">
+    var viewModel = {
+        details: ko.observable(),
+        currentProfit: ko.observable(150000)
+    };
+    ko.applyBindings(viewModel);
+    viewModel.currentProfit(-50);
+    viewModel.details("<em>For further details, view the report <a href='report.html'>here</a>.</em>");
+
+</script>
+

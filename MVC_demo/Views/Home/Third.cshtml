@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Third";
+}
+
+<h2>Third</h2>
+
+<script type="text/javascript" src="~/Scripts/knockout-3.4.2.debug.js"></script>
+<script type="text/javascript">
+    //使用observables数组
+    var myObservableArray = ko.observableArray();//初始化一个空的数组
+    var ObservableArray = ko.observableArray([//初始化一个有初始值的数组
+        { name: "1", type: "11" },
+        { name: "2", type: "22" },
+        { name: "3", type: "33" }
+    ]);
+    myObservableArray.push("some value is allen");//向数组中添加一个项
+
+    alert('the length of the array is ' + myObservableArray().length);//获取数组自身长度
+    alert('the first element is ' + myObservableArray()[0]);//获取数组中第一个值
+
+    alert(myObservableArray.indexOf('some value is allen'));//将返回以0为第一个索引的第一个等于is的数组项的索引，没找到返回-1
+    alert(myObservableArray.slice(0, 2));//返回给定的从开始索引到结束索引之间所有的对象集合
+
+    //操作observableArray数组的函数都是和JavaScript数组原生函数等价的，唯一不同的是observableArray数组的改变可以通知订阅者
+    //例如：pop, push, shift, unshift, reverse, sort, splice
+    ObservableArray.push('4');// 在数组末尾添加一个新项
+    ObservableArray.pop();// 删除数组最后一个项并返回该项
+    ObservableArray.unshift('0');// 在数组头部添加一个项
+    ObservableArray.shift();// 删除数组头部第一项并返回该项
+    ObservableArray.reverse();// 翻转整个数组的顺序
+    ObservableArray.sort();// 给数组排序
+
+    //可以传入一个排序函数进行排序，2个参数
+    ObservableArray.sort(function (left, right) {
+        return left.lastName == right.lastName ? 0 : (left.lastName < right.lastName ? -1 : 1);
+    });
+
+    //observableArray 添加了一些JavaScript数组默认没有但非常有用的函数，remove和removeAll
+    myObservableArray.remove(someItem);// 删除所有等于someItem的元素并将被删除元素作为一个数组返回
+    myObservableArray.remove(function (item) { return item.age < 18; });//删除所有age属性小于18的元素并将被删除元素作为一个数组返回
+    myObservableArray.removeAll(['Chad', 132, undefined]);//删除所有等于'Chad', 123, or undefined的元素并将被删除元素作为一个数组返回
+</script>
